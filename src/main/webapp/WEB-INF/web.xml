@@ -11,7 +11,7 @@
     </session-config>
     <data-source>
         <name>java:global/SakilaDataSource</name>
-        <class-name>com.mysql.cj.jdbc.MysqlXADataSource</class-name>
+        <class-name>com.mysql.cj.jdbc.MysqlConnectionPoolDataSource</class-name>
         <server-name>localhost</server-name>
         <database-name>sakila</database-name>
         <user>sakila</user>
