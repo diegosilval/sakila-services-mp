@@ -15,13 +15,16 @@
  */
 package com.vasslatam.sakila.services.endpoints;
 
+import com.vasslatam.sakila.services.domain.Actor;
 import com.vasslatam.sakila.services.domain.Film;
+import com.vasslatam.sakila.services.services.ActorService;
 import com.vasslatam.sakila.services.services.FilmService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -34,11 +37,26 @@ import javax.ws.rs.core.Response;
 public class FilmEndpoint {
 
     @Inject
+    private ActorService actorService;
+
+    @Inject
     private FilmService filmService;
 
     @GET
     public Response findAll() {
         List<Film> films = filmService.findAll();
+        return Response.ok(films).build();
+    }
+
+    @GET
+    @Path("by-actor")
+    public Response findByActor(@QueryParam("actor") String actorName) {
+        List<Actor> actors = actorService.findByName(actorName);
+        if (actors.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        Actor actor = actors.get(0);
+        List<Film> films = filmService.findByActor(actor);
         return Response.ok(films).build();
     }
 }

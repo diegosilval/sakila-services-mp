@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Diego Silva Limaco <diego.silva at apuntesdejava.com>.
+ * Copyright 2020 diego.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 package com.vasslatam.sakila.services.services;
 
 import com.vasslatam.sakila.services.domain.Actor;
-import com.vasslatam.sakila.services.domain.Film;
-import com.vasslatam.sakila.services.repositories.FilmRepository;
+import com.vasslatam.sakila.services.repositories.ActorRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,18 +26,12 @@ import javax.inject.Inject;
  * @author diego
  */
 @ApplicationScoped
-public class FilmService {
+public class ActorService {
 
     @Inject
-    private FilmRepository filmRepository;
+    private ActorRepository actorRepository;
 
-    public List<Film> findAll() {
-        return filmRepository.findAll();
+    public List<Actor> findByName(String name) {
+        return actorRepository.findByName(name);
     }
-
-    public List<Film> findByActor(Actor actor) {
-        return filmRepository.findByActor(actor);
-    }
-
-    //@TODO Busca de peliculas donde actua un actor en base al nombre. Pueden haber varios actores con el mismo nombre
 }
