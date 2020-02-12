@@ -24,9 +24,11 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 /**
@@ -65,7 +67,7 @@ public class FilmRepository {
         TypedQuery<Film> query = em.createQuery(cq);
         return query.getResultList();
     }
-
+    
     public List<Film> findByActors(List<Actor> actors) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Film> cq = cb.createQuery(Film.class);
@@ -74,7 +76,12 @@ public class FilmRepository {
                 .where(
                         filmActor.get(FilmActor_.actor).in(actors)
                 );
+        filmActor.fetch(FilmActor_.film, JoinType.LEFT);
         TypedQuery<Film> query = em.createQuery(cq);
         return query.getResultList();
+    }
+
+    public Film findById(Integer filmId) {
+        return em.find(Film.class, filmId);
     }
 }

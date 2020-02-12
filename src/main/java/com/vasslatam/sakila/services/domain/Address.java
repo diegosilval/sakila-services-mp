@@ -39,7 +39,7 @@ public class Address implements Serializable {
     @Column(name = "address_id")
     private int addressId;
 
-    @Column(name = "address1")
+    @Column(name = "address")
     private String address1;
     @Column(name = "address2")
     private String address2;
@@ -47,7 +47,7 @@ public class Address implements Serializable {
     private String district;
 
     @ManyToOne
-    @JoinColumn(name = "city")
+    @JoinColumn(name = "city_id")
     private City city;
     @Column(name = "postal_code")
     private String postalCode;
