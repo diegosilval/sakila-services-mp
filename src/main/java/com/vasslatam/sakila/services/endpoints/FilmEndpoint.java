@@ -55,8 +55,9 @@ public class FilmEndpoint {
         if (actors.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        Actor actor = actors.get(0);
-        List<Film> films = filmService.findByActor(actor);
+//        Actor actor = actors.get(0);
+//        List<Film> films = filmService.findByActor(actor);
+        List<Film> films = filmService.findByActors(actors);
         return Response.ok(films).build();
     }
 }

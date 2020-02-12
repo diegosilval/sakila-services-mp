@@ -65,4 +65,16 @@ public class FilmRepository {
         TypedQuery<Film> query = em.createQuery(cq);
         return query.getResultList();
     }
+
+    public List<Film> findByActors(List<Actor> actors) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Film> cq = cb.createQuery(Film.class);
+        Root<FilmActor> filmActor = cq.from(FilmActor.class);
+        cq.select(filmActor.get(FilmActor_.film))
+                .where(
+                        filmActor.get(FilmActor_.actor).in(actors)
+                );
+        TypedQuery<Film> query = em.createQuery(cq);
+        return query.getResultList();
+    }
 }

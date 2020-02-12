@@ -41,4 +41,8 @@ public class FilmService {
     }
 
     //@TODO Busca de peliculas donde actua un actor en base al nombre. Pueden haber varios actores con el mismo nombre
+
+    public List<Film> findByActors(List<Actor> actors) {
+        return filmRepository.findByActors(actors);
+    }
 }
