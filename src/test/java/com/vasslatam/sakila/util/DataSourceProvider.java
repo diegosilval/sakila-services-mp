@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 @DataSourceDefinition(
         className = "org.h2.Driver",
         name = "java:global/SakilaDataSource",
-        url = "jdbc:h2:mem:",
+        url = "jdbc:h2:./target/data/test",
         user = "sa",
         password = "",
         maxPoolSize = 5,

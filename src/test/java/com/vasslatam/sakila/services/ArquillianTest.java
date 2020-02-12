@@ -23,7 +23,6 @@ import java.util.List;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -43,17 +42,12 @@ public class ArquillianTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArquillianTest.class);
 
     @Inject
-    private DataSourceProvider dsp;
-    @Inject
-    private JPAProvider jpap;
-    @Inject
     private ActorRepository actorRepository;
 
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "sakila.war")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                //agregando las clases que se cargarán en el entorno
                 .addClasses(DataSourceProvider.class,
                         JPAProvider.class,
                         ActorRepository.class,
@@ -62,10 +56,10 @@ public class ArquillianTest {
     }
 
     @Test
-//    @UsingDataSet("datasets/test.yml")
-    @ApplyScriptBefore("actors.sql")
+    @UsingDataSet("datasets/test.json")
     public void findActor() {
         List<Actor> actors = actorRepository.findByName("JHON");
         assertFalse(actors.isEmpty());
+        LOGGER.info("total actores:{}", actors.size());
     }
 }
