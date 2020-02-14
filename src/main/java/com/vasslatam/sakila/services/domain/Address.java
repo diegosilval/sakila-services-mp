@@ -17,6 +17,7 @@ package com.vasslatam.sakila.services.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,7 @@ public class Address implements Serializable {
     @Column(name = "phone")
     private String phone;
     @Column(name = "location")
+    @JsonbTransient
     private byte[] location;
 
     @Column(name = "last_update")
@@ -130,6 +132,5 @@ public class Address implements Serializable {
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-            
-            
+
 }

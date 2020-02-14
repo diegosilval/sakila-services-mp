@@ -17,6 +17,7 @@ package com.vasslatam.sakila.services.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,30 +39,31 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     private int customerId;
-    
+
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonbTransient
     private Store store;
-    
+
     @Column(name = "first_name")
     private String firstName;
-    
+
     @Column(name = "last_name")
     private String lastName;
-    
+
     @Column(name = "email")
     private String email;
-    
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
-    
+
     @Column(name = "active")
     private boolean active;
-    
+
     @Column(name = "create_date")
     private LocalDateTime createDate;
-    
+
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
@@ -136,7 +138,5 @@ public class Customer implements Serializable {
     public void setLastDate(LocalDateTime lastDate) {
         this.lastUpdate = lastDate;
     }
-    
-    
-    
+
 }
