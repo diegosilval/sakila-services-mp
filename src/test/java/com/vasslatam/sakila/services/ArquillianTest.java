@@ -16,8 +16,11 @@
 package com.vasslatam.sakila.services;
 
 import com.vasslatam.sakila.services.domain.Actor;
+import com.vasslatam.sakila.services.domain.Customer;
 import com.vasslatam.sakila.services.repositories.ActorRepository;
 import com.vasslatam.sakila.services.repositories.JPAProvider;
+import com.vasslatam.sakila.services.services.CustomerService;
+import com.vasslatam.sakila.services.type.Rating;
 import com.vasslatam.sakila.util.DataSourceProvider;
 import java.util.List;
 import javax.inject.Inject;
@@ -44,22 +47,39 @@ public class ArquillianTest {
     @Inject
     private ActorRepository actorRepository;
 
+    @Inject
+    private CustomerService customerService;
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "sakila.war")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addClasses(DataSourceProvider.class,
-                        JPAProvider.class,
-                        ActorRepository.class,
-                        Actor.class
-                );
+                .addClasses(
+                        DataSourceProvider.class,
+                        JPAProvider.class
+                )
+                .addPackage(ActorRepository.class.getPackage())
+                .addPackage(CustomerService.class.getPackage())
+                .addPackage(Actor.class.getPackage())
+                .addPackages(true, Rating.class.getPackage());
     }
 
     @Test
-    @UsingDataSet("datasets/test.json")
+    @UsingDataSet("datasets/actors.json")
     public void findActor() {
+        LOGGER.info("----- PROBANDO BUSQUEDA DE ACTORES -----");
         List<Actor> actors = actorRepository.findByName("JHON");
         assertFalse(actors.isEmpty());
         LOGGER.info("total actores:{}", actors.size());
     }
+
+    @Test
+    @UsingDataSet("datasets/customers.json")
+    public void findCustomer() {
+        LOGGER.info("----- PROBANDO BUSQUEDA DE CLIENTE -----");
+        List<Customer> customers = customerService.findByName("Albert Tesla");
+        assertFalse(customers.isEmpty());
+        LOGGER.info("total customers:{}", customers.size());
+    }
+
 }
