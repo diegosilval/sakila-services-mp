@@ -5,6 +5,19 @@
     <artifactId>sakila-services</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+    <!-- arquillian -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.6.0.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>    
+    <!-- /arquillian -->
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -15,7 +28,7 @@
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>3.0</version>
+            <version>3.2</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -30,14 +43,90 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.19</version>
         </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.extras</groupId>
+            <artifactId>payara-embedded-all</artifactId>
+            <version>${payara.version}</version> 
+            <scope>test</scope>
+        </dependency> 
+        <dependency>
+            <groupId>fish.payara.api</groupId>
+            <artifactId>payara-api</artifactId>
+            <version>${payara.version}</version> 
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+            <version>1.0.2</version> 
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-persistence-dbunit</artifactId>
+            <version>1.0.0.Alpha7</version> 
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- /test -->
     </dependencies>
     <build>
         <finalName>sakila-services</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>       
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version> 
+                <configuration>
+                    <systemProperties>
+                        <arquillian.launch>glassfish-embedded</arquillian.launch>
+                    </systemProperties>
+                    <systemPropertyVariables>
+                        <java.util.logging.config.file>
+                            ${project.build.testOutputDirectory}/logging.properties
+                        </java.util.logging.config.file>
+                    </systemPropertyVariables> 
+                </configuration>
+            </plugin>  
+        </plugins>
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
+        <payara.version>5.194</payara.version> 
     </properties>
 </project>
