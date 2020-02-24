@@ -20,11 +20,13 @@ import com.vasslatam.sakila.services.domain.Film;
 import com.vasslatam.sakila.services.domain.FilmActor;
 import com.vasslatam.sakila.services.domain.FilmActor_;
 import com.vasslatam.sakila.services.domain.Film_;
+import com.vasslatam.sakila.services.domain.Inventory;
+import com.vasslatam.sakila.services.domain.Inventory_;
+import com.vasslatam.sakila.services.domain.Store;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -67,7 +69,7 @@ public class FilmRepository {
         TypedQuery<Film> query = em.createQuery(cq);
         return query.getResultList();
     }
-    
+
     public List<Film> findByActors(List<Actor> actors) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Film> cq = cb.createQuery(Film.class);
@@ -83,5 +85,18 @@ public class FilmRepository {
 
     public Film findById(Integer filmId) {
         return em.find(Film.class, filmId);
+    }
+
+    public List<Film> findByStore(Store store) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Film> cq = cb.createQuery(Film.class);
+        Root<Inventory> inventory = cq.from(Inventory.class);
+        cq.select(inventory.get(Inventory_.film))
+                .distinct(true)
+                .where(
+                        cb.equal(inventory.get(Inventory_.store), store)
+                );
+        TypedQuery<Film> query = em.createQuery(cq);
+        return query.getResultList();
     }
 }

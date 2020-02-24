@@ -17,6 +17,7 @@ package com.vasslatam.sakila.services.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "staff")
 public class Staff implements Serializable {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,12 +62,13 @@ public class Staff implements Serializable {
 
     @Column(name = "username")
     private String username;
-    
-    @Column(name = "password")    
+
+    @Column(name = "password")
     private String password;
-    
+
     @OneToOne(mappedBy = "managerStaff")
     @JoinColumn(name = "store_id")
+    @JsonbTransient
     private Store store;
 
     @Column(name = "last_update")

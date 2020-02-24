@@ -17,6 +17,7 @@ package com.vasslatam.sakila.services.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,6 +47,7 @@ public class Store implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "manager_staff_id")
+    @JsonbTransient
     private Staff managerStaff;
 
     @Column(name = "last_update")

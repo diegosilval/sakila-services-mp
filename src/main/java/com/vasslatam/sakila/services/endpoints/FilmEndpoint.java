@@ -20,9 +20,11 @@ import com.vasslatam.sakila.services.domain.Film;
 import com.vasslatam.sakila.services.services.ActorService;
 import com.vasslatam.sakila.services.services.FilmService;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -34,6 +36,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("film")
 @Produces(MediaType.APPLICATION_JSON)
+@ApplicationScoped
 public class FilmEndpoint {
 
     @Inject
@@ -58,6 +61,12 @@ public class FilmEndpoint {
 //        Actor actor = actors.get(0);
 //        List<Film> films = filmService.findByActor(actor);
         List<Film> films = filmService.findByActors(actors);
+        return Response.ok(films).build();
+    }
+    @GET
+    @Path("store/{storeId}")
+    public Response findByStore(@PathParam("storeId") int storeId) {
+        List<Film> films = filmService.findByStoreId(storeId);
         return Response.ok(films).build();
     }
 }

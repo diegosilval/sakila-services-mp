@@ -23,6 +23,10 @@
             <value>false</value>
         </property>
         <property>
+            <name>allowPublicKeyRetrieval</name>
+            <value>true</value>
+        </property>
+        <property>
             <name>CharacterEncoding</name>
             <value>UTF-8</value>
         </property>

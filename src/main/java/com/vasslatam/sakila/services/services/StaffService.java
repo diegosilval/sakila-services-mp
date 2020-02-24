@@ -15,47 +15,32 @@
  */
 package com.vasslatam.sakila.services.services;
 
-import com.vasslatam.sakila.services.domain.Actor;
-import com.vasslatam.sakila.services.domain.Film;
+import com.vasslatam.sakila.services.domain.Staff;
 import com.vasslatam.sakila.services.domain.Store;
-import com.vasslatam.sakila.services.repositories.FilmRepository;
+import com.vasslatam.sakila.services.repositories.StaffRepository;
 import com.vasslatam.sakila.services.repositories.StoreRepository;
-import java.util.Collections;
-import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 /**
  *
- * @author diego
+ * @author Diego Silva Limaco <diego.silva at apuntesdejava.com>
  */
 @ApplicationScoped
-public class FilmService {
+public class StaffService {
 
     @Inject
     private StoreRepository storeRepository;
-
     @Inject
-    private FilmRepository filmRepository;
+    private StaffRepository staffRepository;
 
-    public List<Film> findAll() {
-        return filmRepository.findAll();
+    public Staff findById(int id) {
+        return staffRepository.findById(id);
     }
 
-    public List<Film> findByActor(Actor actor) {
-        return filmRepository.findByActor(actor);
-    }
-
-    //@TODO Busca de peliculas donde actua un actor en base al nombre. Pueden haber varios actores con el mismo nombre
-    public List<Film> findByActors(List<Actor> actors) {
-        return filmRepository.findByActors(actors);
-    }
-
-    public List<Film> findByStoreId(int storeId) {
-        Store store = storeRepository.findById(storeId);
-        if (store == null) {
-            return Collections.emptyList();
-        }
-        return filmRepository.findByStore(store);
+    public Staff findByStoreId(int storeId) {
+        Store store=storeRepository.findById(storeId);
+        if (store==null)return null;
+        return staffRepository.findByStore(store);
     }
 }
